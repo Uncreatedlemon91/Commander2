@@ -1,0 +1,7 @@
+name: {{PROJECT_NAME}}
+type: game              # game | tool | other
+engine:                 # e.g. Godot 4.5, Unity 6, Phaser, none
+status: active          # active | paused | done | dead
+milestone: M0
+tagline:                # one line, shown on the dashboard card
+play_url:               # optional: playable web build

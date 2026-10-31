@@ -1,32 +1,70 @@
-# Commander2
+# Project Hub
 
-A first-person, open-world Revolutionary War simulator: rise from a freelance
-mercenary to the commander of a private regiment and naval fleet across a
-seamless, 1:1 scale simulation of the Thirteen Colonies.
+A gateway for running game projects with Claude. You get one place to see every
+project's status, tasks, decisions, devlogs, screenshots, PRs and CI, on
+phone or desktop. Claude does the work in each repo and keeps that record up to date.
 
-See [GAME_VISION.md](GAME_VISION.md) for the full design pillars, gameplay
-loops, world scope, progression model, and technical principles. Detailed
-sub-system specs live under `SYSTEMS/`.
+> This repo was previously the Commander2 game. That project is retired and
+> its design docs were removed (they remain in git history).
 
-Built with **Godot 4.x** (GDScript, strictly typed) with C++/GDExtension
-planned for performance-critical sub-systems (1:1 unit AI, physics batching).
-See [CLAUDE_RULES.md](CLAUDE_RULES.md) for coding standards.
+## How it works
 
-## Documentation
+```
+ project repo A ─┐   each has PROJECT/ (installed from kit/)
+ project repo B ─┼─► GitHub API ─► dashboard (static web app, your browser)
+ project repo C ─┘                    ▲
+                                      │ projects.json (this repo) lists the repos
+```
 
-* [PROJECT/](PROJECT/README.md) — **project status hub**: [overview](PROJECT/overview.md), [roadmap](PROJECT/roadmap.md), tasks, decisions, devlog, [inbox](PROJECT/inbox.md)
-* [GAME_VISION.md](GAME_VISION.md) — high concept, pillars, gameplay loops, scope
-* [CLAUDE_RULES.md](CLAUDE_RULES.md) — GDScript standards and engineering rules
-* [SYSTEMS/01_technical_architecture.md](SYSTEMS/01_technical_architecture.md) — world streaming, LOD tiers, rendering, multiplayer/replication
-* [SYSTEMS/02_mercenary_economy.md](SYSTEMS/02_mercenary_economy.md) — contracts, payroll, supply, trade
-* [SYSTEMS/03_tactical_battalion_ai.md](SYSTEMS/03_tactical_battalion_ai.md) — formations, ballistics, morale, AI
-* [SYSTEMS/04_seamless_world_sim.md](SYSTEMS/04_seamless_world_sim.md) — world graph, army routing, persistence
-* [SYSTEMS/05_naval_simulation.md](SYSTEMS/05_naval_simulation.md) — sail physics, wind, broadsides, boarding
-* [SYSTEMS/06_player_character_ui.md](SYSTEMS/06_player_character_ui.md) — first-person controls, command HUD
-* [SYSTEMS/07_art_style.md](SYSTEMS/07_art_style.md) — low-poly visual style
+* **The repo is the database.** Each project keeps its state in `PROJECT/` as
+  Markdown + YAML: overview, roadmap, tasks, decisions, devlog, inbox, media.
+  Claude reads and updates it every session by following `PROJECT/CLAUDE_PROTOCOL.md`.
+* **The dashboard is only a view.** It reads those files plus open PRs and CI
+  runs. It never calls Claude, so checking status costs no tokens.
 
-## Status
+## Add a project
 
-Design phase — docs only, no code yet. Current milestone and open questions:
-[PROJECT/roadmap.md](PROJECT/roadmap.md) and [PROJECT/inbox.md](PROJECT/inbox.md). This documentation set is the
-current point of reference for the project.
+```bash
+# from this repo, with the game repo cloned next to it
+kit/install.sh ../my-game "My Game"
+```
+
+Then:
+1. Ask Claude in that repo to "fill in PROJECT/ from the codebase and docs"
+   (overview, roadmap, first tasks). Or fill it in yourself.
+2. Add the repo to [`projects.json`](projects.json).
+
+## Run the dashboard
+
+```bash
+cd dashboard
+npm install
+npm run dev        # http://localhost:5173, demo mode by default
+npm test           # parser and attention unit tests
+npm run build      # static site in dashboard/dist/
+```
+
+It opens in **demo mode** with sample data. To use real data, open ⚙ Settings,
+turn off demo mode, and enter:
+* **Hub repository:** this repo (`owner/name`), where `projects.json` lives.
+* **GitHub token:** a [fine-grained personal access token](https://github.com/settings/personal-access-tokens/new)
+  with access to the hub and project repos and **read-only** permissions for Contents, Pull
+  requests, Actions and Metadata. It's stored only in that browser.
+
+`dist/` is plain static files with relative paths, so any static host works
+(Cloudflare Pages, Vercel, Netlify, or GitHub Pages if the repo is public or on a
+paid plan). On a phone, use "Add to Home Screen" to get an app icon.
+
+## What the dashboard shows
+
+* **Needs you:** failing CI, PRs to review, open decisions, your tasks,
+  playtests, blocked tasks, across all projects.
+* **Per project:** overview + roadmap, task board (tap a task for its
+  done-when list, the context Claude loads, and an "Edit on GitHub" link), devlog with
+  screenshots, decisions, inbox, media gallery, PRs with CI status, and a Play button
+  when `project.yml` has a `play_url`.
+
+## Roadmap
+
+See [`PROJECT/roadmap.md`](PROJECT/roadmap.md). Next: write actions from the dashboard
+(capture ideas, answer decisions), then "Send to Claude" for ready tasks.

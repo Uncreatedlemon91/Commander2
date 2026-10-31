@@ -1,0 +1,7 @@
+name: Project Hub
+type: tool
+engine: React + Vite (dashboard), Markdown kit
+status: active
+milestone: H1
+tagline: One place to run and watch every game project Claude works on
+play_url:

@@ -1,55 +1,35 @@
-# Commander2 — Overview
+# Project Hub — Overview
 
-> Default session context. Keep this file under ~1,000 tokens. Load the
-> detailed docs only when a task's `context:` list names them.
+> Default session context for this repo. Keep under ~1,000 tokens.
 
-**Pitch:** First-person, open-world Revolutionary War simulator. The player
-rises from a freelance mercenary to colonel of a private regiment and naval
-fleet across a seamless 1:1 Thirteen Colonies. Session-based co-op (2–16
-players, host-authoritative).
+**What:** A gateway for running game projects with Claude. There are two parts:
+1. **`kit/`**: a template (`PROJECT/` folder plus `CLAUDE_PROTOCOL.md`) installed
+   into each project repo with `kit/install.sh`. The repo is the source of truth.
+2. **`dashboard/`**: a static, mobile-friendly web app that reads `PROJECT/`
+   plus PRs and CI from every repo listed in `projects.json`, through the GitHub API.
 
-**Engine:** Godot 4.x, strictly typed GDScript. C++/GDExtension only for
-profiled hot paths. Engineering rules: `CLAUDE_RULES.md`.
+**Tech:** React 18 + TypeScript + Vite. No backend: the GitHub API is called from
+the browser with the owner's fine-grained token (stored only on their device).
+Demo mode renders bundled sample data with no token.
 
-**Phase:** Design complete for first pass. No code yet. Current milestone: **M0 — Bootstrap** (`roadmap.md`).
+**Current milestone:** **H1 — Read-only dashboard** (`roadmap.md`).
 
 ## System status
 
-Stages: Designed → Prototyped → Implemented → Tested
-
-| System | Spec | Stage |
+| System | Location | Stage |
 |---|---|---|
-| Technical architecture (streaming, LOD tiers, data, networking) | `SYSTEMS/01_technical_architecture.md` | Designed |
-| Mercenary economy | `SYSTEMS/02_mercenary_economy.md` | Designed |
-| Tactical battalion AI (formations, ballistics, morale) | `SYSTEMS/03_tactical_battalion_ai.md` | Designed |
-| Seamless world sim | `SYSTEMS/04_seamless_world_sim.md` | Designed |
-| Naval simulation | `SYSTEMS/05_naval_simulation.md` | Designed |
-| Player character & UI | `SYSTEMS/06_player_character_ui.md` | Designed |
-| Art style (low-poly) | `SYSTEMS/07_art_style.md` | Designed |
+| Project kit + install script | `kit/` | Implemented |
+| Session protocol | `kit/PROJECT/CLAUDE_PROTOCOL.md` | Implemented |
+| Dashboard: read-only views | `dashboard/` | Prototyped |
+| Dashboard: actions (capture, dispatch to Claude) | — | Idea |
+| Scheduled autonomy + reports | — | Idea |
 
-## Load-bearing concepts (summary of 01)
+## Key constraints
 
-* **LOD tiers:** every unit always exists as data. Tier 0 Engaged (~500m, per tick,
-  full ballistics), Tier 1 Nearby (~2km, reduced rate), Tier 2 Active-distant
-  (aggregate regiment, ~1Hz), Tier 3 Dormant (record only). Promotion and demotion
-  never lose data.
-* **Data-oriented:** state lives in flat arrays on manager autoloads
-  (`UnitManager`, `ArmyManager`, `ShipManager`, `WorldGrid`), cross-referenced by
-  integer ID. No per-soldier Nodes.
-* **Rendering:** `MultiMeshInstance3D` for anything numerous, GPU texture-baked
-  animation for soldiers.
-* **World:** 1km × 1km cells streamed in rings. Streaming affects only presentation,
-  never simulation state.
-* **Networking:** ENet. The host simulates everything; clients send requests and
-  receive per-client interest-filtered snapshots. Portable player-owned company saves.
+* The dashboard never calls Claude just to *display* data. Status costs zero tokens.
+* Blobs are cached by git SHA (content-addressed), so a refresh re-fetches only changed files.
+* Template files start with `_` and are ignored by the dashboard.
 
 ## Settled decisions
 
-See `decisions/`. Don't reopen these without new information.
-D-001 Godot + typed GDScript · D-002 Data-oriented LOD sim · D-003 Host-authoritative
-session co-op · D-004 Portable companies · D-005 Low-poly flat-shaded art ·
-D-006 Project tracking lives in `PROJECT/`.
-
-## Open
-
-Questions waiting on the owner are listed in `inbox.md` under "Needs a decision".
+D-001 Repo is the database · D-002 Static dashboard, no backend · D-003 Games-first features.

@@ -1,0 +1,7 @@
+name: Lantern Keeper
+type: game
+engine: Godot 4.5
+status: active
+milestone: M2
+tagline: Cozy lighthouse roguelite. Keep the light burning through the storm.
+play_url: https://example.com/lantern-keeper/
