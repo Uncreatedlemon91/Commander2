@@ -14,6 +14,7 @@ See [CLAUDE_RULES.md](CLAUDE_RULES.md) for coding standards.
 
 ## Documentation
 
+* [PROJECT/](PROJECT/README.md) — **project status hub**: [overview](PROJECT/overview.md), [roadmap](PROJECT/roadmap.md), tasks, decisions, devlog, [inbox](PROJECT/inbox.md)
 * [GAME_VISION.md](GAME_VISION.md) — high concept, pillars, gameplay loops, scope
 * [CLAUDE_RULES.md](CLAUDE_RULES.md) — GDScript standards and engineering rules
 * [SYSTEMS/01_technical_architecture.md](SYSTEMS/01_technical_architecture.md) — world streaming, LOD tiers, rendering, multiplayer/replication
@@ -26,5 +27,6 @@ See [CLAUDE_RULES.md](CLAUDE_RULES.md) for coding standards.
 
 ## Status
 
-Design phase — docs only, no code yet. This documentation set is the
+Design phase — docs only, no code yet. Current milestone and open questions:
+[PROJECT/roadmap.md](PROJECT/roadmap.md) and [PROJECT/inbox.md](PROJECT/inbox.md). This documentation set is the
 current point of reference for the project.

@@ -166,3 +166,39 @@ players (not a persistent dedicated-server world; see
 * Follow the global repo conventions (no unrequested abstractions, no
   speculative error handling, no backwards-compat shims) — this project has
   no legacy users to be compatible with.
+
+## 10. Project Tracking & Session Protocol
+
+`PROJECT/` is the project's state (see `PROJECT/README.md`). Every session
+keeps it current. That record is what replaces re-explaining context and
+asking Claude "where are we?".
+
+**Starting a session**
+* Load `PROJECT/overview.md` first. For a task, load the task file and **only**
+  the docs in its `context:` list. Don't read every `SYSTEMS/` doc to
+  orient yourself. Open another doc only when the work actually hits it, and
+  add it to the task's `context:` list so the next session knows.
+* Check `PROJECT/decisions/` before proposing an approach. Don't reopen an
+  accepted decision without new information. If you have some, raise it as
+  a question in `inbox.md` and don't act on it.
+* Only pick up tasks with `status: ready` and `owner: claude` unless the owner
+  directs otherwise. Set the task to `in-progress` when starting.
+
+**Ending a session** (part of the work, not optional)
+* Update the task: status (`review` when a PR is open, `blocked` with the
+  reason), `pr:` link, and a dated line in its notes.
+* Write one short `PROJECT/devlog/YYYY-MM-DD-slug.md` entry in the format in
+  `PROJECT/README.md`.
+* New settled choices go in `PROJECT/decisions/` as `status: proposed` until
+  the owner accepts them. Questions for the owner go under "Needs a decision"
+  in `inbox.md`.
+* Update the system stage in `overview.md` if it changed. Keep that file
+  under ~1,000 tokens.
+
+**Limits for unattended or scheduled runs**
+* At most one task per run unless the run's instructions say otherwise.
+* If the first approach fails (tests stay red, or a spec gap appears), stop:
+  mark the task `blocked`, write the devlog entry, and don't attempt a second
+  approach unsupervised.
+* Never merge your own PR. Never change `GAME_VISION.md`, `SYSTEMS/` design
+  intent, or an accepted decision without the owner's approval.
