@@ -32,4 +32,4 @@ Demo mode renders bundled sample data with no token.
 
 ## Settled decisions
 
-D-001 Repo is the database · D-002 Static dashboard, no backend · D-003 Games-first features.
+D-001 Repo is the database · D-002 Static dashboard, no backend · D-003 Games-first features · D-004 GitHub Pages hosting.

@@ -51,9 +51,15 @@ turn off demo mode, and enter:
   with access to the hub and project repos and **read-only** permissions for Contents, Pull
   requests, Actions and Metadata. It's stored only in that browser.
 
-`dist/` is plain static files with relative paths, so any static host works
-(Cloudflare Pages, Vercel, Netlify, or GitHub Pages if the repo is public or on a
-paid plan). On a phone, use "Add to Home Screen" to get an app icon.
+### Hosting (GitHub Pages)
+
+Every push to `main` builds, tests and deploys the dashboard to
+`https://<owner>.github.io/<repo>/` (`.github/workflows/dashboard.yml`).
+One-time setup: **Settings → Pages → Build and deployment → Source: GitHub Actions**.
+The page is set to `noindex`, and it shows nothing real until a token is entered on
+that device. On a phone, use "Add to Home Screen" to get an app icon.
+
+`dist/` is plain static files with relative paths, so any other static host works too.
 
 ## What the dashboard shows
 

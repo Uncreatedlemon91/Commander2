@@ -2,8 +2,9 @@
 
 ## Needs a decision (owner)
 
-- [ ] Hosting for the dashboard: GitHub Pages (needs this repo public or a paid plan for private Pages), Cloudflare Pages, or Vercel?
-- [ ] Which game repos to register first in `projects.json`?
+- [x] Hosting for the dashboard → GitHub Pages (D-004)
+- [ ] Which game repos to register first in `projects.json`? Nam and Pro Clubs are local-only and need repos first. Are YeeHaw-FC / Long Grass related?
+- [ ] Make the hub repo private? It's public, so PROJECT/ notes are readable by anyone (Pages on a private repo needs a paid plan).
 
 ## Ideas
 
